@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table
                 ->foreignId('service_request_id')
-                ->constrained('service_requests')
-                ->unique();
+                ->unique()
+                ->constrained('service_requests');
+
 
             $table
                 ->foreignId('farmer_id')

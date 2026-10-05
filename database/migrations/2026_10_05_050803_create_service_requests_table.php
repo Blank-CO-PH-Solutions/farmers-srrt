@@ -40,8 +40,8 @@ return new class extends Migration {
                 ])
                 ->default("submitted");
 
-            $table->decimal("latitude")->nullable();
-            $table->decimal("longitude")->nullable();
+            $table->decimal("latitude", 10, 7)->nullable();
+            $table->decimal("longitude", 10, 7)->nullable();
 
             $table->timestamp("submitted_at")->nullable();
             $table->timestamp("resolved_at")->nullable();
