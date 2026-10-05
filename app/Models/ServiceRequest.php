@@ -42,6 +42,11 @@ class ServiceRequest extends Model
         return $this->hasMany(RequestStatusHistory::class);
     }
 
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class);
+    }
+
     public function rating()
     {
         return $this->hasOne(Rating::class);
