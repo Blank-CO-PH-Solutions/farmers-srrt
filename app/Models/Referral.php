@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-@[Fillable([
+#[Fillable([
     'service_request_id',
     'from_office_id',
     'to_office_id',

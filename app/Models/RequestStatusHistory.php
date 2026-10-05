@@ -5,13 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-@[Fillable([
-    'service_request_id',
-    'status',
-    'office_id',
-    'changed_by',
-    'remarks',
-])]
+#[Fillable(['service_request_id', 'status', 'office_id', 'changed_by', 'remarks'])]
 class RequestStatusHistory extends Model
 {
     public function serviceRequest()

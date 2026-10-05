@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string("reference_number")->unique();
             $table->foreignId("farmer_id")->constrained("users");
             $table
-                ->foreignId("service_types_id")
+                ->foreignId("service_type_id")
                 ->constrained("service_types");
             $table
                 ->foreignId("current_office_id")

@@ -3,6 +3,8 @@
 .env
 .env.backup
 .env.production
+.env.local
+.env.*.local
 .phpactor.json
 .phpunit.result.cache
 /.codex
@@ -25,3 +27,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+composer.phar
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
