@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -10,10 +11,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    return view('farmer.dashboard', ["username" => $user->name, "user_email" => $user->email, "user_role" => $user->role, "requests" => $user->serviceRequests] );
-})->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 Route::get('/login', function () {
     return view('login');
