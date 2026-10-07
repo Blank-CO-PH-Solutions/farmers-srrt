@@ -8,24 +8,9 @@
     @vite('resources/css/app.css')
 </head>
 <body class="flex flex-col">
-    <header>
-        @auth
-            <form method="POST" action="/logout">
-                @csrf
-                <button
-                    id="logoutBtn"
-                    type="submit"
-                    class="cursor-pointer rounded-lg border-2 bg-red-500 text-white text-lg font-medium p-2 transition-all"
-                    on
-                >
-                    Logout
-                </button>
-            </form>
-        @endauth
-    </header>
     <!-- Main Content Container -->
     <main class="grow">
-        <div class="flex flex-col">
+        <div class="flex flex-col ">
             @yield('content')
         </div>
     </main>
