@@ -7,8 +7,12 @@ use GuzzleHttp\AuthMiddleware;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
     $user = Auth::user();
-    return view('welcome', ["name" => $user->name, "email" => $user->email]);
+    return view('farmer.dashboard', ["username" => $user->name, "user_email" => $user->email, "user_role" => $user->role]);
 })->middleware('auth');
 
 Route::get('/login', function () {
@@ -16,3 +20,8 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+});

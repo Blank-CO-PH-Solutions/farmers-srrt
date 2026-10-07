@@ -219,7 +219,5 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
-        <h1>Welcome, {{ $name }}</h1>
-        <p>Email: {{ $email }}</p>
     </body>
 </html>
