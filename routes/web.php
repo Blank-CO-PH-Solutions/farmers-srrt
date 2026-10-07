@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
-    return view('farmer.dashboard', ["username" => $user->name, "user_email" => $user->email, "user_role" => $user->role]);
+    return view('farmer.dashboard', ["username" => $user->name, "user_email" => $user->email, "user_role" => $user->role, "requests" => $user->serviceRequests] );
 })->middleware('auth');
 
 Route::get('/login', function () {

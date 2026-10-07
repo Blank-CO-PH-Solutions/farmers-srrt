@@ -47,14 +47,16 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-4 w-full max-w-lg my-2">
-            <div id="request" class=" p-4 rounded-lg border-2 w-full border-b-5 border-black">
-                <h2 id="requestID" class="text-2xl">REQ-2026-0001</h2>
-                <h3 class="text-xl">Crop Damage Assistance</h3>
-                <h4 class="text-md">Status: Referred</h4>
-                <h5 class="text-md">Current Office: Provincial Agriculture</h5>
+            @foreach($requests as $request)
+                <div id="request" class=" p-4 rounded-lg border-2 w-full border-b-5 border-black">
+                    <h2 id="referenceNumber" class="text-2xl">{{ $request->reference_number }}</h2>
+                    <h3 class="text-xl">{{ $request->serviceType->name }}</h3>
+                    <h4 class="text-md">Status: {{ $request->status }}</h4>
+                    <h5 class="text-md">Current Office: {{ $request->currentOffice->name }}</h5>
 
-                <button class="border-2 cursor-pointer bg-white text-black hover:bg-black hover:text-white border-b-5 border-b-black text-lg p-2 w-30 my-2 rounded-lg float-right">View</button>
-            </div>
+                    <button class="border-2 cursor-pointer bg-white text-black hover:bg-black hover:text-white border-b-5 border-b-black text-lg p-2 w-30 my-2 rounded-lg float-right">View</button>
+                </div>
+            @endforeach
         </div>
 
     </section>
