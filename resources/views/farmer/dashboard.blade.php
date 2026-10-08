@@ -54,7 +54,7 @@
                     <h4 class="text-md">Status: {{ $request->status }}</h4>
                     <h5 class="text-md">Current Office: {{ $request->currentOffice->name }}</h5>
 
-                    <button class="border-2 cursor-pointer bg-white text-black hover:bg-black hover:text-white border-b-5 border-b-black text-lg p-2 w-30 my-2 rounded-lg float-right">View</button>
+                    <a href="/requests/{{ $request->id }}" class="text-center border-2 cursor-pointer bg-white text-black hover:bg-black hover:text-white border-b-5 border-b-black text-lg p-2 w-30 my-2 rounded-lg float-right">View</a>
                 </div>
             @endforeach
         </div>

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen flex flex-col justify-center w-full max-w-xl mx-auto p-5">
+    <div class="flex flex-col justify-center w-full max-w-xl min-h-screen p-5 mx-auto">
         <header class="mb-3">
             <a href="{{ url()->previous() }}"
-                class="p-2 bg-gray-500 rounded-lg text-gray-100 font-medium text-lg cursor-pointer">
+                class="p-2 text-lg font-medium text-gray-100 bg-gray-500 rounded-lg cursor-pointer border-b-5 border-b-gray-600">
                 Back to My Requests
             </a>
 
@@ -12,7 +12,7 @@
         </header>
 
         <section class="flex flex-col justify-center gap-5 my-2">
-            <div class="flex justify-between items-center">
+            <div class="flex items-center justify-between">
                 <span class="text-lg font-medium">{{ $request->reference_number }}</span>
                 <?php
                 $statusClass = 'bg-black text-white';
@@ -28,16 +28,16 @@
                 <span class="p-2 rounded-xl text-md uppercase {{ $statusClass }} font-medium">{{ $request->status }}</span>
             </div>
 
-            <h2 class="font-medium text-2xl text-left">{{ $request->description }}</h2>
+            <h2 class="text-2xl font-medium text-left">{{ $request->description }}</h2>
         </section>
 
-        <section class="grid grid-cols-2 grid-flow-row gap-4 my-5">
+        <section class="grid grid-flow-row grid-cols-2 gap-4 my-5">
             <div
-                class="p-4 flex flex-col justify-center border-2 h-40 cols-span-1 rounded-xl border-b-5 border-b-black gap-4">
+                class="flex flex-col justify-center h-40 gap-4 p-4 border-2 cols-span-1 rounded-xl border-b-5 border-b-black">
                 <h2 class="text-2xl font-bold uppercase">Service</h2>
                 <h2 class="text-xl font-medium">{{ $request->serviceType->name }}</h2>
             </div>
-            <div class="p-4 flex flex-col justify-center border-2 col-span-1 rounded-xl border-b-5 border-b-black gap-4">
+            <div class="flex flex-col justify-center col-span-1 gap-4 p-4 border-2 rounded-xl border-b-5 border-b-black">
                 <h2 class="text-2xl font-bold uppercase">Current Office</h2>
                 <h2 class="text-xl font-medium">{{ $request->currentOffice->name }}</h2>
             </div>
@@ -52,92 +52,110 @@
             <p class="text-lg font-medium">Calamity-related: {{ $request->is_calamity == 1 ? 'Yes' : 'No' }}</p>
 
             @php
-                // 1. Define all possible statuses in chronological order
-                $allStatuses = ['submitted', 'pending', 'in progress', 'approved', 'completed'];
+                $progressStatuses = [
+                    'submitted' => 'Submitted',
+                    'validated' => 'Validated',
+                    'routed' => 'Routed',
+                    'under_review' => 'Under Review',
+                    'resolved' => 'Resolved',
+                    'closed' => 'Closed',
+                ];
 
-                // 2. Index existing histories by status string (lowercase for case-insensitive matching)
-                // Make sure to eager load relations in your controller: $request->load('statusHistories.office', 'statusHistories.changedBy');
-                $completedHistory = $request->statusHistories->keyBy(fn($item) => strtolower($item->status));
+                $currentStatus = $request->status;
+
+                // "referred" is a referral event, not a main progress stage.
+                // Visually, the request has reached the Under Review stage.
+                $currentProgressStatus = match ($currentStatus) {
+                    'referred' => 'under_review',
+                    default => $currentStatus,
+                };
+
+                $currentIndex = array_search(
+                    $currentProgressStatus,
+                    array_keys($progressStatuses)
+                )
             @endphp
 
-            <div class="my-6 max-w-xl">
-                <!-- Timeline Container -->
-                <div class="relative pl-7 border-l-2 border-slate-200 space-y-8">
+            <div class="my-8">
+                <h2 class="mb-5 text-2xl font-bold">
+                    Request Progress
+                </h2>
 
-                    @foreach ($allStatuses as $statusKey)
-                        @php
-                            $history = $completedHistory->get(strtolower($statusKey));
-                            $isCompleted = !is_null($history);
-                        @endphp
+                <div class="pb-4 overflow-x-auto">
+                    <div class="min-w-175">
+                        <div class="flex items-center gap-4">
+                            @foreach ($progressStatuses as $statusKey => $statusLabel)
+                                @php
+                                    $statusIndex = array_search(
+                                        $statusKey,
+                                        array_keys($progressStatuses)
+                                    );
 
-                        <div class="relative group">
+                                    $isCompleted = $statusIndex < $currentIndex;
+                                    $isCurrent = $statusIndex === $currentIndex;
+                                @endphp
 
-                            @if ($isCompleted)
-                                <!-- COMPLETED / REACHED STATUS -->
+                                {{-- Status circle --}}
+                                <div class="flex flex-col items-center">
 
-                                <!-- Solid Black Outer Ring with Black Core Dot -->
-                                <div
-                                    class="absolute -left-[39px] top-0.5 h-5 w-5 rounded-full border-2 border-slate-900 bg-white ring-4 ring-white flex items-center justify-center">
-                                    <div class="h-2.5 w-2.5 rounded-full bg-slate-900"></div>
-                                </div>
-
-                                <div class="flex flex-col gap-1">
-                                    <!-- Status Title & Timestamp -->
-                                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                                        <h4 class="text-base font-bold text-slate-900 leading-snug">
-                                            {{ ucfirst($statusKey) }}
-                                        </h4>
-                                        <time class="text-xs font-medium text-slate-500 whitespace-nowrap">
-                                            {{ $history->created_at->format('M j, Y • g:i A') }}
-                                        </time>
+                                    <div
+                                        class="w-8 h-8 rounded-full border-2 flex items-center justify-center
+                                        @if ($isCompleted)
+                                            bg-green-500 border-green-600 text-white
+                                        @elseif ($isCurrent)
+                                            bg-blue-500 border-blue-600 text-white
+                                        @else
+                                            bg-white border-gray-300 text-gray-400
+                                        @endif"
+                                    >
+                                        @if ($isCompleted)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        @elseif ($isCurrent)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endif
                                     </div>
 
-                                    <!-- Office & Changed By Meta Tags -->
-                                    @if ($history->office || $history->changedBy)
-                                        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                                            @if ($history->office)
-                                                <span class="inline-flex items-center font-medium text-slate-700">
-                                                    {{ $history->office->name }}
-                                                </span>
-                                            @endif
-
-                                            @if ($history->office && $history->changedBy)
-                                                <span>•</span>
-                                            @endif
-
-                                            @if ($history->changedBy)
-                                                <span>By {{ $history->changedBy->name }}</span>
-                                            @endif
-                                        </div>
-                                    @endif
-
-                                    <!-- Remarks -->
-                                    @if (!empty($history->remarks))
-                                        <p class="text-sm text-slate-600 leading-relaxed break-words mt-0.5">
-                                            {{ $history->remarks }}
-                                        </p>
-                                    @endif
-                                </div>
-                            @else
-                                <!-- PENDING / UNREACHED STATUS -->
-
-                                <!-- Hollow Circle Dot -->
-                                <div
-                                    class="absolute -left-[39px] top-0.5 h-5 w-5 rounded-full border-2 border-slate-300 bg-white ring-4 ring-white">
+                                    <span
+                                        class="mt-2 text-sm font-medium text-center
+                                        @if ($isCompleted || $isCurrent)
+                                            text-black
+                                        @else
+                                            text-gray-400
+                                        @endif"
+                                    >
+                                        {{ $statusLabel }}
+                                    </span>
                                 </div>
 
-                                <!-- Title Only (No timestamp, remarks, or metadata) -->
-                                <div class="flex flex-col">
-                                    <h4 class="text-base font-semibold text-slate-400 leading-snug">
-                                        {{ ucfirst($statusKey) }}
-                                    </h4>
-                                </div>
-                            @endif
+                                {{-- Connector line --}}
+                                @if (!$loop->last)
+                                    <div
+                                        class="flex-1 h-1 mx-2
+                                        @if ($statusIndex < $currentIndex)
+                                            bg-green-500
+                                        @else
+                                            bg-gray-200
+                                        @endif"
+                                    ></div>
+                                @endif
+                            @endforeach
 
                         </div>
-                    @endforeach
-
+                    </div>
                 </div>
+
+                @if ($currentStatus === 'referred')
+                    <div class="p-3 mt-4 border-2 border-black rounded-lg">
+                        <span class="font-bold">Referred</span>
+                        <span class="text-sm">
+                            -- This request has been referred to another office for further processing. Please check your notifications for more details. --
+                        </span>
+                    </div>
+                @endif
             </div>
         </section>
     </div>
