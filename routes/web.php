@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ServiceRequestController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -23,3 +24,6 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 });
+
+
+Route::get('/requests/{id}', [ServiceRequestController::class, 'show']);
