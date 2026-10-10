@@ -3,9 +3,9 @@
 @section('content')
     <div class="flex flex-col justify-center w-full max-w-xl min-h-screen p-5 mx-auto">
         <header class="mb-3">
-            <a href="{{ url()->previous() }}"
+            <a href="{{ route('dashboard') }}"
                 class="p-2 text-lg font-medium text-gray-100 bg-gray-500 rounded-lg cursor-pointer border-b-5 border-b-gray-600">
-                Back to My Requests
+                Back to Dashboard
             </a>
 
 
@@ -28,7 +28,7 @@
                 <span class="p-2 rounded-xl text-md uppercase {{ $statusClass }} font-medium">{{ $request->status }}</span>
             </div>
 
-            <h2 class="text-2xl font-medium text-left">{{ $request->description }}</h2>
+            <h2 class="text-2xl font-medium text-left wrap-break-word">{{ $request->description }}</h2>
         </section>
 
         <section class="grid grid-flow-row grid-cols-2 gap-4 my-5">

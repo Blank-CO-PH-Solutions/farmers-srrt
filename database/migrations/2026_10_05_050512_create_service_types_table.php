@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->text("description")->nullable();
             $table
                 ->foreignId("default_office_id")
-                ->constrained("offices")
-                ->nullable();
+                ->nullable()
+                ->constrained("offices");
             $table->timestamps();
         });
     }
