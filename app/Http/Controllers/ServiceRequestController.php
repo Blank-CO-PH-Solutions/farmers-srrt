@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ServiceRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\ServiceType;
 
 class ServiceRequestController extends Controller
 {
@@ -13,5 +13,11 @@ class ServiceRequestController extends Controller
 
 
         return view("farmer.request.show", ["request"=> $request]);
+    }
+
+    public function create() {
+        $serviceTypes = ServiceType::all();
+
+        return view("farmer.request.create", ["serviceTypes" => $serviceTypes]);
     }
 }

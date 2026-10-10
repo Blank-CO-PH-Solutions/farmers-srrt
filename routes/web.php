@@ -26,4 +26,7 @@ Route::post('/logout', function () {
 });
 
 
+Route::get('/requests/create', [ServiceRequestController::class, 'create']);
 Route::get('/requests/{id}', [ServiceRequestController::class, 'show']);
+
+
