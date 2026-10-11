@@ -82,8 +82,8 @@
                 </h2>
 
                 <div class="pb-4 overflow-x-auto">
-                    <div class="min-w-175">
-                        <div class="flex items-center gap-4">
+                    <div class="min-w-100">
+                        <div class="flex items-center gap-2">
                             @foreach ($progressStatuses as $statusKey => $statusLabel)
                                 @php
                                     $statusIndex = array_search(
@@ -157,6 +157,71 @@
                     </div>
                 @endif
             </div>
+
+
         </section>
+        <section class="my-8">
+            <h3 class="mb-5 text-xl font-bold">
+                Request Activity
+            </h3>
+
+            @forelse ($request->statusHistories as $history)
+                <div class="relative pb-6 pl-8 last:pb-0">
+                    {{-- Activity indicator --}}
+                    <div class="absolute left-0 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 ring-4 ring-white">
+                        <div class="h-2 w-2 rounded-full bg-blue-600"></div>
+                    </div>
+
+                    {{-- Connector line --}}
+                    @unless ($loop->last)
+                        <div class="absolute bottom-0 left-[9px] top-6 w-0.5 bg-gray-200"></div>
+                    @endunless
+
+                    {{-- Activity card --}}
+                    <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                        <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                            <h4 class="text-base font-bold uppercase text-gray-900">
+                                {{ str_replace('_', ' ', $history->status) }}
+                            </h4>
+
+                            <time
+                                class="text-sm text-gray-500"
+                                datetime="{{ $history->created_at?->toIso8601String() }}"
+                            >
+                                {{ $history->created_at?->format('M j, Y') }}
+                            </time>
+                        </div>
+
+                        <p class="mb-2 text-sm text-gray-700">
+                            <span class="font-semibold">Office:</span>
+                            {{ $history->office?->name ?? 'Not specified' }}
+                        </p>
+
+                        @if ($history->remarks)
+                            <p class="text-sm leading-relaxed text-gray-600">
+                                <span class="font-semibold text-gray-700">
+                                    Remarks:
+                                </span>
+                                {{ $history->remarks }}
+                            </p>
+                        @endif
+
+                        @if ($history->changedBy)
+                            <p class="mt-3 border-t border-gray-100 pt-3 text-xs text-gray-500">
+                                Updated by {{ $history->changedBy->name }}
+                            </p>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="rounded-lg border border-dashed border-gray-300 p-6 text-center">
+                    <p class="text-sm text-gray-500">
+                        No activity has been recorded for this request yet.
+                    </p>
+                </div>
+            @endforelse
+        </section>
+        ```
+
     </div>
 @endsection()
