@@ -7,6 +7,7 @@ use App\Models\RequestStatusHistory;
 use App\Models\ServiceRequest;
 use App\Models\ServiceType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ServiceRequestController extends Controller
@@ -15,6 +16,10 @@ class ServiceRequestController extends Controller
     {
         $request = ServiceRequest::findOrFail($id);
 
+        $user = Auth::user();
+
+        // TODO: Add support for allowing officers to view farmer's request.
+        abort_if($user !== $request->farmer() || $user->role !== 'officer', 403);
 
         return view("farmer.request.show", ["request"=> $request]);
     }
