@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class StoreServiceRequest extends FormRequest
+/**
+ * @method \App\Models\User|null user($guard = null)
+ */
+class StoreServiceRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

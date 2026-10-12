@@ -57,7 +57,8 @@ class ServiceRequest extends Model
         return $this->hasMany(Attachment::class);
     }
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'is_calamity' => 'boolean',
             'latitude' => 'decimal:7',
@@ -66,5 +67,9 @@ class ServiceRequest extends Model
             'resolved_at' => 'datetime',
             'closed_at' => 'datetime',
         ];
+    }
+
+    public static function findOrFail($id)
+    {
     }
 }

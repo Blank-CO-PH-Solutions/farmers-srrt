@@ -59,6 +59,11 @@
                     <button type="submit" class="btn btn-primary w-full">
                         Login
                     </button>
+
+                    <div class="flex items-center justify-between mb-2">
+                        <a class="hover:underline text-indigo-400" href="/forgot-password">Forgot your Password?</a>
+                        <a class="hover:underline text-indigo-400" href="/register">Don't have an account yet?</a>
+                    </div>
                 </form>
 
             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mx-auto flex w-full max-w-xl flex-col p-5">
+    <div class="mx-auto flex w-full max-w-xl md:max-w-4xl flex-col p-5">
         <header class="mb-3">
             <a href="{{ route('dashboard') }}" class="btn btn-neutral">
                 Back to Dashboard
@@ -22,7 +22,7 @@
                     };
                 @endphp
 
-                <span class="badge badge-lg {{ $statusClass }} uppercase font-medium">{{ $request->status }}</span>
+                <span class="badge badge-lg text-white {{ $statusClass }} uppercase font-medium">{{ $request->status }}</span>
             </div>
 
             <h2 class="text-2xl font-medium text-left wrap-break-word">{{ $request->description }}</h2>
@@ -92,9 +92,13 @@
 
                                 $isCompleted = $statusIndex < $currentIndex;
                                 $isCurrent = $statusIndex === $currentIndex;
+
+                                $statusClass = ($isCompleted
+                                    ? "step-success"
+                                    : ($isCurrent ? "step-primary" : ""));
                             @endphp
 
-                            <li class="step @if ($isCompleted) step-success @elseif ($isCurrent) step-primary @endif">
+                            <li class="step {{ $statusClass }}">
                                 {{ $statusLabel }}
                             </li>
                         @endforeach

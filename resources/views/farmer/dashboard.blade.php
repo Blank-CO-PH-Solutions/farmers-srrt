@@ -54,7 +54,7 @@
                         <h3 class="text-lg">{{ $request->serviceType->name }}</h3>
                         <p>
                             Status:
-                            <span class="badge {{ match ($request->status) {
+                            <span class="badge text-white {{ match ($request->status) {
                                 'submitted' => 'badge-info',
                                 'validated', 'routed' => 'badge-primary',
                                 'under_review', 'referred' => 'badge-warning',

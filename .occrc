@@ -1,0 +1,4 @@
+# In .occrc
+[prompt]
+max_diff_lines = 150
+concise = true

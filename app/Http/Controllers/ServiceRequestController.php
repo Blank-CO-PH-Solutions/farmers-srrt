@@ -6,36 +6,34 @@ use App\Http\Requests\StoreServiceRequest;
 use App\Models\RequestStatusHistory;
 use App\Models\ServiceRequest;
 use App\Models\ServiceType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ServiceRequestController extends Controller
 {
-    public function show($id)
+    public function show(int $id): \Illuminate\Contracts\View\View | null
     {
-        $request = ServiceRequest::findOrFail($id);
+        $request = ServiceRequest::query()->findOrFail($id);
 
         $user = Auth::user();
 
         // TODO: Add support for allowing officers to view farmer's request.
-        abort_if($user !== $request->farmer() || $user->role !== 'officer', 403);
+        abort_if($user->id !== $request->farmer_id, 403);
 
-        return view("farmer.request.show", ["request"=> $request]);
+        return view("farmer.request.show", ["request" => $request]);
     }
 
-    public function create() {
+    public function create(): \Illuminate\Contracts\View\View | null
+    {
         $serviceTypes = ServiceType::all();
 
         return view("farmer.request.create", ["serviceTypes" => $serviceTypes]);
     }
 
-    function genrand_num() {
-    }
+    public function store(StoreServiceRequest $request): \Illuminate\Http\RedirectResponse
+    {
 
-    public function store(StoreServiceRequest $request) {
-
-        $result = DB::transaction(function() use ($request) {
+        $result = DB::transaction(function () use ($request) {
             $userRequested = $request->user();
 
             // Build the reference_number
@@ -71,5 +69,4 @@ class ServiceRequestController extends Controller
 
         return redirect("/requests/{$result->id}");
     }
-
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
     'service_request_id',
@@ -14,12 +15,17 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Attachment extends Model
 {
-    public function serviceRequest()
+    /**
+     * @return BelongsTo<ServiceRequest,Attachment>
+     */
+    public function serviceRequest(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ServiceRequest::class);
     }
-
-    public function uploadedBy()
+    /**
+     * @return BelongsTo<User,Attachment>
+     */
+    public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
     }
