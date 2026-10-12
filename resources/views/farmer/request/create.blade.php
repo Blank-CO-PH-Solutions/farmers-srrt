@@ -30,7 +30,7 @@
                 <select name="service_type_id" class="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 pr-10 text-gray-700 shadow-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                     <option value="" disabled selected>Select a Service</option>
                     @foreach ($serviceTypes as $serviceType)
-                        <option value="{{ $serviceType->id }}">{{ $serviceType->name }}</option>
+                        <option value="{{ $serviceType->id }}" @selected(old('service_type_id') == $serviceType->id)>{{ $serviceType->name }}</option>
                     @endforeach
                 </select>
                 <!-- Custom Chevron Icon -->
@@ -42,18 +42,25 @@
             </div>
 
             <div class="w-full max-w-sm">
-                <textarea name="description" id="description" rows="4" placeholder="Description" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-700 shadow-sm transition-all placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"></textarea>
+                <textarea
+                    name="description"
+                    id="description"
+                    rows="4"
+                    placeholder="Description"
+                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-700 shadow-sm transition-all placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                >{{ is_array(old('description')) ? '' : old('description') }}</textarea>
             </div>
 
             <label class="group relative flex cursor-pointer items-center gap-3 select-none">
                 <!-- Hidden Native Checkbox -->
-                <input name="is_calamity" id="isCalamity" type="checkbox" class="peer sr-only" />
+                <input name="is_calamity" id="isCalamity" type="checkbox" value="1" class="peer sr-only" @checked(old('is_calamity')) />
 
-                <!-- Custom Checkbox Box -->
+                <!-- Custom Checkbox Box (added peer-checked classes here) -->
                 <div class="flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/20 group-hover:border-gray-400">
-                    <!-- Checkmark Icon (Hidden by default, shown when checked) -->
+
+                    <!-- Checkmark Icon (No peer class needed here anymore) -->
                     <svg class="h-3.5 w-3.5 stroke-white opacity-0 transition-opacity peer-checked:opacity-100" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
 

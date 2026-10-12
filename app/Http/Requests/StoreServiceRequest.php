@@ -24,7 +24,8 @@ class StoreServiceRequest extends FormRequest
     {
         return [
             'service_type_id' => 'required|exists:service_types,id',
-            'description' => 'required|string|max:100|min:30',
+            'description' => 'required|string|max:2000|min:30',
+            'is_calamity' => 'sometimes|boolean'
         ];
     }
 }

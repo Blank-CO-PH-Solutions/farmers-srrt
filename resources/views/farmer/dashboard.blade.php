@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div id='farmerDashboard' class="flex flex-col items-center justify-center p-2">
+<div id='farmerDashboard' class="flex flex-col items-center justify-center p-5">
     <div class="flex items-center justify-between w-full">
         <div>
             <h1 class="text-xl font-medium">Welcome, {{ $username }}</h1>
