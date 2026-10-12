@@ -5,88 +5,63 @@
     class="min-h-screen bg-cover bg-center"
     style="background-image: url('/images/farmers.jpg')"
 >
-    <!-- Background overlay -->
-    <div class="min-h-screen bg-black/45 flex items-center justify-center p-4">
+    <div class="flex min-h-screen items-center justify-center bg-black/45 p-4">
 
-        <!-- Login Card -->
-        <div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-8">
+        <div class="card w-full max-w-md bg-base-100 shadow-xl">
+            <div class="card-body">
 
-            <h3 class="text-2xl font-bold text-center mb-2">
-                Service Request & Referral Tracker
-            </h3>
+                <h1 class="card-title justify-center text-center">
+                    Service Request &amp; Referral Tracker
+                </h1>
 
-            <p class="text-center text-gray-600 text-sm mb-6">
-                Login to access your account
-            </p>
+                <p class="text-center text-sm text-base-content/60">
+                    Login to access your account
+                </p>
 
-            <form method="POST" action="/login" class="flex flex-col gap-4">
-                @csrf
+                <form method="POST" action="/login" class="mt-2 flex flex-col gap-4">
+                    @csrf
 
-                <!-- Email -->
-                <div class="flex flex-col gap-1">
-                    <label
-                        for="email"
-                        class="font-medium text-sm"
-                    >
-                        Email Address
-                    </label>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend">Email Address</legend>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="input w-full"
+                            placeholder="Enter your email"
+                            required
+                            autofocus
+                        >
+                    </fieldset>
 
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-900 w-full"
-                        placeholder="Enter your email"
-                        required
-                        autofocus
-                    >
-                </div>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend">Password</legend>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="input w-full"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </fieldset>
 
-                <!-- Password -->
-                <div class="flex flex-col gap-1">
-                    <label
-                        for="password"
-                        class="font-medium text-sm"
-                    >
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-900 w-full"
-                        placeholder="Enter your password"
-                        required
-                    >
-                </div>
-
-                <!-- Remember Me -->
-                <div class="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        id="remember"
-                        name="remember"
-                        class="cursor-pointer"
-                    >
-
-                    <label
-                        for="remember"
-                        class="cursor-pointer select-none font-medium text-sm"
-                    >
+                    <label class="label cursor-pointer justify-start gap-3">
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                            class="checkbox"
+                        >
                         Remember Me
                     </label>
-                </div>
 
-                <!-- Login -->
-                <button
-                    type="submit"
-                    class="w-full py-2 rounded bg-blue-600 text-white font-medium cursor-pointer hover:bg-blue-700 transition-colors"
-                >
-                    Login
-                </button>
-            </form>
+                    <button type="submit" class="btn btn-primary w-full">
+                        Login
+                    </button>
+                </form>
 
+            </div>
         </div>
     </div>
 </div>

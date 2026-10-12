@@ -1,64 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div id='farmerDashboard' class="flex flex-col items-center justify-center p-5">
-    <div class="flex items-center justify-between w-full">
+<div class="mx-auto flex w-full max-w-xl flex-col p-5 md:max-w-4xl">
+    <div class="flex items-center justify-between">
         <div>
             <h1 class="text-xl font-medium">Welcome, {{ $username }}</h1>
 
-            <h3 class="font-medium text-md">Role: {{ $user_role }}</h3>
+            <h3 class="text-md font-medium">Role: {{ $user_role }}</h3>
         </div>
 
         <form method="POST" action="/logout">
             @csrf
-            <button
-                id="logoutBtn"
-                type="submit"
-                class="p-2 text-lg font-medium text-white transition-all bg-red-500 border-2 rounded-lg cursor-pointer border-b-5 border-b-red-700 hover:bg-red-700"
-                on
-            >
+            <button id="logoutBtn" type="submit" class="btn btn-error">
                 Logout
             </button>
         </form>
-
     </div>
 
-    <section id="data" class="grid w-full h-full max-w-lg grid-cols-3 grid-rows-1 gap-4 my-10 max-h-md">
-        <div id="overallRequests" class="p-4 text-center text-white bg-blue-500 border-blue-700 rounded-lg shadow-md border-b-5">
-            <h1 class="text-5xl font-bold">3</h1>
-            <h3 class="text-2xl font-medium">Requests</h3>
+    <section id="data" class="my-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="card bg-primary text-primary-content shadow-sm">
+            <div class="card-body items-center text-center">
+                <h1 class="text-5xl font-bold">{{ $stats['total'] }}</h1>
+                <h3 class="text-2xl font-medium">Requests</h3>
+            </div>
         </div>
 
-        <div id="pendingRequests" class="p-4 text-center text-white rounded-lg shadow-md border-b-5 border-amber-700 bg-amber-500">
-            <h1 class="text-5xl font-bold">1</h1>
-            <h3 class="text-2xl font-medium">Pending</h3>
+        <div class="card bg-warning text-warning-content shadow-sm">
+            <div class="card-body items-center text-center">
+                <h1 class="text-5xl font-bold">{{ $stats['pending'] }}</h1>
+                <h3 class="text-2xl font-medium">Pending</h3>
+            </div>
         </div>
 
-        <div id="resolvedRequests" class="p-4 text-center text-white bg-green-500 border-green-700 rounded-lg shadow-md border-b-5">
-            <h1 class="text-5xl font-bold">2</h1>
-            <h3 class="text-2xl font-medium">Resolved</h3>
+        <div class="card bg-success text-success-content shadow-sm">
+            <div class="card-body items-center text-center">
+                <h1 class="text-5xl font-bold">{{ $stats['resolved'] }}</h1>
+                <h3 class="text-2xl font-medium">Resolved</h3>
+            </div>
         </div>
     </section>
 
-    <section id="myRequests" class="flex flex-col justify-center w-full max-w-lg">
+    <section id="myRequests" class="flex w-full flex-col">
         <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold">My Requests</h1>
-            <a href="/requests/create" class="w-auto p-2 my-2 text-lg text-white bg-green-500 border-2 rounded-lg cursor-pointer hover:bg-green-700 border-b-5 border-b-green-700 ">Submit Request</a>
+            <a href="/requests/create" class="btn btn-primary">Submit Request</a>
         </div>
 
-        <div class="grid w-full max-w-lg grid-flow-row grid-cols-1 gap-4 my-2 md:grid-cols-3">
+        <div class="my-2 grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             @foreach($requests as $request)
-                <div id="request" class="w-full p-4 border-2 border-black rounded-lg  border-b-5">
-                    <h2 id="referenceNumber" class="text-2xl">{{ $request->reference_number }}</h2>
-                    <h3 class="text-xl">{{ $request->serviceType->name }}</h3>
-                    <h4 class="text-md">Status: {{ $request->status }}</h4>
-                    <h5 class="text-md">Current Office: {{ $request->currentOffice->name }}</h5>
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ $request->reference_number }}</h2>
+                        <h3 class="text-lg">{{ $request->serviceType->name }}</h3>
+                        <p>
+                            Status:
+                            <span class="badge {{ match ($request->status) {
+                                'submitted' => 'badge-info',
+                                'validated', 'routed' => 'badge-primary',
+                                'under_review', 'referred' => 'badge-warning',
+                                'resolved', 'closed' => 'badge-success',
+                                default => 'badge-neutral',
+                            } }}">{{ $request->status }}</span>
+                        </p>
+                        <p>Current Office: {{ $request->currentOffice->name }}</p>
 
-                    <a href="/requests/{{ $request->id }}" class="float-right p-2 my-2 text-lg text-center text-black bg-white border-2 rounded-lg cursor-pointer hover:bg-black hover:text-white border-b-5 border-b-black w-30">View</a>
+                        <div class="card-actions justify-end">
+                            <a href="/requests/{{ $request->id }}" class="btn btn-sm">View</a>
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>
-
     </section>
 </div>
 @endsection
